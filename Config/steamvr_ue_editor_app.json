@@ -1,0 +1,18 @@
+{
+	"source": "UE",
+	"applications": [
+		{
+			"app_key": "application.generated.ue.maskinspelet-11590370.ue4editor.exe",
+			"launch_type": "url",
+			"url": "steam://launch/",
+			"action_manifest_path": "D:/Documents/Source/LTU-Gestaltningsprojekt-Team4/Config/SteamVRBindings/steamvr_manifest.json",
+			"strings":
+			{
+				"en_us":
+				{
+					"name": "Maskinspelet-11590370 [UE Editor]"
+				}
+			}
+		}
+	]
+}
