@@ -26,5 +26,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interaction")
 	void OnInteract(AActor* Caller);
+	UFUNCTION(BlueprintCallable, Category = "Interaction")
 	virtual void OnInteract_Implementation(AActor* Caller);
 };
