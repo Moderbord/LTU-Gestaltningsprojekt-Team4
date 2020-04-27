@@ -29,5 +29,6 @@ void AInteractableBase::OnInteract_Implementation(AActor* Caller)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Object destroyed");
 	Destroy();
+	//Cast<ACharacter>(Caller)
 }
 

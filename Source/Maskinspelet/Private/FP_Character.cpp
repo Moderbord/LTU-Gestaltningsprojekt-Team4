@@ -11,6 +11,7 @@
 #include "MotionControllerComponent.h"
 #include "InteractableInterface.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
+#include "Engine/EngineTypes.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -53,6 +54,8 @@ AFP_Character::AFP_Character()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+
 }
 
 // Called when the game starts or when spawned
@@ -128,6 +131,11 @@ void AFP_Character::OnGrabRelease()
 void AFP_Character::OnRotate()
 {                                                                                                                
 	         
+}
+
+void AFP_Character::ToggleFlashlight()
+{
+
 }
 
 void AFP_Character::OnResetVR()
@@ -249,6 +257,8 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFP_Character::OnGrabRelease);
 	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFP_Character::OnGrab); //might use
 	PlayerInputComponent->BindAction("Inspect", IE_Pressed, this, &AFP_Character::OnRotate);
+	PlayerInputComponent->BindAction("Flashlight", IE_Pressed, this, &AFP_Character::ToggleFlashlight);
+
 
 	// Enable touchscreen input
 	//EnableTouchscreenMovement(PlayerInputComponent);

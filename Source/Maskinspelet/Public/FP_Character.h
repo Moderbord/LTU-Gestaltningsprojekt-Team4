@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "PhysicsEngine/PhysicsHandleComponent.h" 
+#include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "Engine/SpotLight.h"
 #include "FP_Character.generated.h"
 
 
@@ -44,6 +45,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Interaction")
+	bool HasFlashlight = false;
+
 	///** Whether to use motion controller location for aiming. */
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	//uint32 bUsingMotionControllers : 1;
@@ -64,6 +68,9 @@ protected:
 
 	/** Rotates the object that you are holding. */
 	void OnRotate();
+
+	/** Toggles the player flashlight on/off if the player has a flashlight. */
+	void ToggleFlashlight();
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
@@ -128,6 +135,7 @@ private:
 	UPhysicsHandleComponent* PhysicsHandle;
 	FQuat Rotation;
 	float TraceDistance = 300.0f;
+
 
 
 };
