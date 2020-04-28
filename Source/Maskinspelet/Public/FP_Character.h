@@ -135,6 +135,7 @@ private:
 	UPhysicsHandleComponent* PhysicsHandle;
 	FQuat Rotation;
 	float TraceDistance = 300.0f;
+	bool IsConstrained = false;
 
 
 

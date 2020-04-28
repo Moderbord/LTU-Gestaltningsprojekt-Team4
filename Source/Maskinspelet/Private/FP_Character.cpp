@@ -12,6 +12,7 @@
 #include "InteractableInterface.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
 #include "Engine/EngineTypes.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -88,7 +89,6 @@ void AFP_Character::OnFire()
 			//Check if object is pickupable
 			else 
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "grab object try");
 				OnGrab();
 			}
 
@@ -109,7 +109,15 @@ bool AFP_Character::LineTrace()
 void AFP_Character::OnGrab()
 {
 	UStaticMeshComponent* MovedComponent = Cast<UStaticMeshComponent>(Hit.GetComponent());
-	if (MovedComponent->IsSimulatingPhysics())
+	AActor* HitActor = Hit.GetActor();
+	if (HitActor->FindComponentByClass<UPhysicsConstraintComponent>() && MovedComponent->IsSimulatingPhysics())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "reee");
+		IsConstrained = true;
+		PhysicsHandle->GrabComponent(MovedComponent, NAME_None, Hit.ImpactPoint, false);
+		MovedComponent->SetAngularDamping(1000.0f);
+	}
+	else if (MovedComponent->IsSimulatingPhysics())
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "physics on");
 		//MovedComponent->SetSimulatePhysics(true);
@@ -125,6 +133,7 @@ void AFP_Character::OnGrabRelease()
 	{
 		MovedComponent->SetAngularDamping(0.0f);
 		PhysicsHandle->ReleaseComponent();
+		IsConstrained = false;
 	}
 }
               
@@ -165,7 +174,15 @@ void AFP_Character::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-	FVector CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	FVector CameraVec;
+	if (IsConstrained)
+	{
+		CameraVec = FirstPersonCameraComponent->GetForwardVector() * 150;
+	}
+	else
+	{
+		CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	}
 	FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
 	PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
 }
@@ -174,7 +191,15 @@ void AFP_Character::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-	FVector CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	FVector CameraVec;
+	if (IsConstrained)
+	{
+		CameraVec = FirstPersonCameraComponent->GetForwardVector() * 150;
+	}
+	else
+	{
+		CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	}
 	FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
 	PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
 }
