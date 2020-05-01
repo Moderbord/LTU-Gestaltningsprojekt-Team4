@@ -59,6 +59,9 @@ protected:
 	/** Picks up an object. */
 	void OnGrab();
 
+	/** Releases the picked up object. */
+	void OnGrabRelease();
+
 	/** Rotates the object that you are holding. */
 	void OnRotate();
 
@@ -123,6 +126,7 @@ private:
 	FVector End;
 	FCollisionQueryParams TraceParams;
 	UPhysicsHandleComponent* PhysicsHandle;
+	FQuat Rotation;
 	float TraceDistance = 300.0f;
 
 

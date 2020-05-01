@@ -79,13 +79,14 @@ void AFP_Character::OnFire()
 			//Check if object is interactable
 			if (Interface != nullptr)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "reee");
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "interact");
 				Interface->Execute_OnInteract(HitActor, this);
 			}
 			//Check if object is pickupable
 			else 
 			{
-
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "grab object try");
+				OnGrab();
 			}
 
 
@@ -104,12 +105,29 @@ bool AFP_Character::LineTrace()
 
 void AFP_Character::OnGrab()
 {
-
+	UStaticMeshComponent* MovedComponent = Cast<UStaticMeshComponent>(Hit.GetComponent());
+	if (MovedComponent->IsSimulatingPhysics())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "physics on");
+		//MovedComponent->SetSimulatePhysics(true);
+		PhysicsHandle->GrabComponent(MovedComponent, NAME_None, Hit.ImpactPoint, false);
+		MovedComponent->SetAngularDamping(1000.0f);
+	}
 }
 
-void AFP_Character::OnRotate()
+void AFP_Character::OnGrabRelease()
 {
-
+	UStaticMeshComponent* MovedComponent = Cast<UStaticMeshComponent>(Hit.GetComponent());
+	if (MovedComponent != nullptr)
+	{
+		MovedComponent->SetAngularDamping(0.0f);
+		PhysicsHandle->ReleaseComponent();
+	}
+}
+              
+void AFP_Character::OnRotate()
+{                                                                                                                
+	         
 }
 
 void AFP_Character::OnResetVR()
@@ -139,12 +157,18 @@ void AFP_Character::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	FVector CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
+	PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
 }
 
 void AFP_Character::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	FVector CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
+	PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
 }
 
 void AFP_Character::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
@@ -222,7 +246,8 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_Character::OnFire);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFP_Character::OnGrab);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFP_Character::OnGrabRelease);
+	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFP_Character::OnGrab); //might use
 	PlayerInputComponent->BindAction("Inspect", IE_Pressed, this, &AFP_Character::OnRotate);
 
 	// Enable touchscreen input

@@ -26,6 +26,10 @@
 		{
 			"Name": "Niagara",
 			"Enabled": true
+		},
+		{
+			"Name": "MeshEditor",
+			"Enabled": true
 		}
 	]
 }
