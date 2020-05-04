@@ -83,7 +83,6 @@ void AFP_Character::OnFire()
 			//Check if object is interactable
 			if (Interface != nullptr)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "interact");
 				Interface->Execute_OnInteract(HitActor, this);
 			}
 			//Check if object is pickupable
@@ -91,10 +90,7 @@ void AFP_Character::OnFire()
 			{
 				OnGrab();
 			}
-
-
 		}
-
 	}
 }
 
@@ -112,14 +108,12 @@ void AFP_Character::OnGrab()
 	AActor* HitActor = Hit.GetActor();
 	if (HitActor->FindComponentByClass<UPhysicsConstraintComponent>() && MovedComponent->IsSimulatingPhysics())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "reee");
 		IsConstrained = true;
 		PhysicsHandle->GrabComponent(MovedComponent, NAME_None, Hit.ImpactPoint, false);
 		MovedComponent->SetAngularDamping(1000.0f);
 	}
 	else if (MovedComponent->IsSimulatingPhysics())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "physics on");
 		//MovedComponent->SetSimulatePhysics(true);
 		PhysicsHandle->GrabComponent(MovedComponent, NAME_None, Hit.ImpactPoint, false);
 		MovedComponent->SetAngularDamping(1000.0f);

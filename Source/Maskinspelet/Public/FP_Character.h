@@ -52,6 +52,9 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	//uint32 bUsingMotionControllers : 1;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Physics")
+	UPhysicsHandleComponent* PhysicsHandle;
+
 protected:
 
 	/** Linetraces and does something accordingly. */
@@ -132,7 +135,6 @@ private:
 	FVector Start;
 	FVector End;
 	FCollisionQueryParams TraceParams;
-	UPhysicsHandleComponent* PhysicsHandle;
 	FQuat Rotation;
 	float TraceDistance = 300.0f;
 	bool IsConstrained = false;
