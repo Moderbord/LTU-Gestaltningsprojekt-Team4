@@ -99,7 +99,7 @@ bool AFP_Character::LineTrace()
 	GetController()->GetPlayerViewPoint(Loc, Rot);
 	Start = Loc;
 	End = Start + (Rot.Vector() * TraceDistance);
-	return GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, TraceParams);;
+	return GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, TraceParams);
 }
 
 void AFP_Character::OnGrab()
@@ -275,8 +275,6 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_Character::OnFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFP_Character::OnGrabRelease);
 	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFP_Character::OnGrab); //might use
-	PlayerInputComponent->BindAction("Inspect", IE_Pressed, this, &AFP_Character::OnRotate);
-	PlayerInputComponent->BindAction("Flashlight", IE_Pressed, this, &AFP_Character::ToggleFlashlight);
 
 
 	// Enable touchscreen input
