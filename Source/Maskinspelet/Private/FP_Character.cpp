@@ -272,8 +272,8 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_Character::OnFire);
-	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFP_Character::OnGrabRelease);
+	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_Character::OnFire);
+	//PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFP_Character::OnGrabRelease);
 	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFP_Character::OnGrab); //might use
 
 
@@ -289,10 +289,10 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("TurnRate", this, &AFP_Character::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &AFP_Character::LookUpAtRate);
+	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	//PlayerInputComponent->BindAxis("TurnRate", this, &AFP_Character::TurnAtRate);
+	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	//PlayerInputComponent->BindAxis("LookUpRate", this, &AFP_Character::LookUpAtRate);
 }
 
 bool AFP_Character::EnableTouchscreenMovement(UInputComponent* PlayerInputComponent)
