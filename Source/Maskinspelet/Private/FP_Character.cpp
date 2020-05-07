@@ -28,20 +28,24 @@ AFP_Character::AFP_Character()
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 
-	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+	//Create the spring arm component
+	//SpringArm = CreateDefaultSubobject<USpringArm>(TEXT("SpringArm"));
+	//SpringArm->SetupAttchment(GetCapsuleComponent());
+
+	//// Create a CameraComponent	
+	//FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	//FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+	//FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
+	//FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
-	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
-	Mesh1P->SetOnlyOwnerSee(true);
-	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
-	Mesh1P->bCastDynamicShadow = false;
-	Mesh1P->CastShadow = false;
-	Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
-	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
+	//Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
+	//Mesh1P->SetOnlyOwnerSee(true);
+	//Mesh1P->SetupAttachment(GetController()->camera);
+	//Mesh1P->bCastDynamicShadow = false;
+	//Mesh1P->CastShadow = false;
+	//Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
+	//Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
 
 	//Set up the physics handel for pickup and inspect
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
@@ -166,36 +170,36 @@ void AFP_Character::MoveRight(float Val)
 
 void AFP_Character::TurnAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-	FVector CameraVec;
-	if (IsConstrained)
-	{
-		CameraVec = FirstPersonCameraComponent->GetForwardVector() * 150;
-	}
-	else
-	{
-		CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
-	}
-	FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
-	PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
+	//// calculate delta for this frame from the rate information
+	//AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	//FVector CameraVec;
+	//if (IsConstrained)
+	//{
+	//	CameraVec = FirstPersonCameraComponent->GetForwardVector() * 150;
+	//}
+	//else
+	//{
+	//	CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	//}
+	//FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
+	//PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
 }
 
 void AFP_Character::LookUpAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-	FVector CameraVec;
-	if (IsConstrained)
-	{
-		CameraVec = FirstPersonCameraComponent->GetForwardVector() * 150;
-	}
-	else
-	{
-		CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
-	}
-	FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
-	PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
+	//// calculate delta for this frame from the rate information
+	//AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	//FVector CameraVec;
+	//if (IsConstrained)
+	//{
+	//	CameraVec = FirstPersonCameraComponent->GetForwardVector() * 150;
+	//}
+	//else
+	//{
+	//	CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	//}
+	//FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
+	//PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
 }
 
 void AFP_Character::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)

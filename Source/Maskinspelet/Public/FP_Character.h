@@ -19,8 +19,12 @@ class MASKINSPELET_API AFP_Character : public ACharacter
 		class USkeletalMeshComponent* Mesh1P;
 
 	/** First person camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* FirstPersonCameraComponent;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//	class UCameraComponent* FirstPersonCameraComponent;
+
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//	class USpringArm* SpringArm;
 
 	///** Motion controller (right hand) */
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -45,8 +49,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Interaction")
-	bool HasFlashlight = false;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Interaction")
+	//bool HasFlashlight = false;
 
 	///** Whether to use motion controller location for aiming. */
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
@@ -126,7 +130,7 @@ public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
-	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+	/*FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }*/
 
 private:
 	FVector Loc;
