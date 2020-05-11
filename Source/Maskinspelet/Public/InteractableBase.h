@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "InteractableInterface.h"
+#include "GameFramework/Actor.h"
 #include "InteractableBase.generated.h"
 
 UCLASS()

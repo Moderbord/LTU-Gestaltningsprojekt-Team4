@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "PhysicsEngine/PhysicsHandleComponent.h" 
+#include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "Engine/SpotLight.h"
 #include "FP_Character.generated.h"
 
 
@@ -18,8 +19,12 @@ class MASKINSPELET_API AFP_Character : public ACharacter
 		class USkeletalMeshComponent* Mesh1P;
 
 	/** First person camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* FirstPersonCameraComponent;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//	class UCameraComponent* FirstPersonCameraComponent;
+
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//	class USpringArm* SpringArm;
 
 	///** Motion controller (right hand) */
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -44,9 +49,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseLookUpRate;
 
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Interaction")
+	//bool HasFlashlight = false;
+
 	///** Whether to use motion controller location for aiming. */
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	//uint32 bUsingMotionControllers : 1;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Physics")
+	UPhysicsHandleComponent* PhysicsHandle;
 
 protected:
 
@@ -64,6 +75,9 @@ protected:
 
 	/** Rotates the object that you are holding. */
 	void OnRotate();
+
+	/** Toggles the player flashlight on/off if the player has a flashlight. */
+	void ToggleFlashlight();
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
@@ -116,7 +130,7 @@ public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
-	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+	/*FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }*/
 
 private:
 	FVector Loc;
@@ -125,9 +139,10 @@ private:
 	FVector Start;
 	FVector End;
 	FCollisionQueryParams TraceParams;
-	UPhysicsHandleComponent* PhysicsHandle;
 	FQuat Rotation;
 	float TraceDistance = 300.0f;
+	bool IsConstrained = false;
+
 
 
 };
