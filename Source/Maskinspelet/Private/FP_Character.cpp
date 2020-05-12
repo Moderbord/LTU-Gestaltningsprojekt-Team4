@@ -272,8 +272,8 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	check(PlayerInputComponent);
 
 	// Bind jump events
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	//PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	//PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
 	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_Character::OnFire);
@@ -287,8 +287,8 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	//PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AFP_Character::OnResetVR);
 
 	// Bind movement events
-	PlayerInputComponent->BindAxis("MoveForward", this, &AFP_Character::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &AFP_Character::MoveRight);
+	//PlayerInputComponent->BindAxis("MoveForward", this, &AFP_Character::MoveForward);
+	//PlayerInputComponent->BindAxis("MoveRight", this, &AFP_Character::MoveRight);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
