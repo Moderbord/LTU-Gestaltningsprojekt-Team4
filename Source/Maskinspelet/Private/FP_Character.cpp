@@ -11,6 +11,8 @@
 #include "MotionControllerComponent.h"
 #include "InteractableInterface.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
+#include "Engine/EngineTypes.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -26,20 +28,24 @@ AFP_Character::AFP_Character()
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 
-	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+	//Create the spring arm component
+	//SpringArm = CreateDefaultSubobject<USpringArm>(TEXT("SpringArm"));
+	//SpringArm->SetupAttchment(GetCapsuleComponent());
+
+	//// Create a CameraComponent	
+	//FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	//FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+	//FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
+	//FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
-	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
-	Mesh1P->SetOnlyOwnerSee(true);
-	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
-	Mesh1P->bCastDynamicShadow = false;
-	Mesh1P->CastShadow = false;
-	Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
-	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
+	//Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
+	//Mesh1P->SetOnlyOwnerSee(true);
+	//Mesh1P->SetupAttachment(GetController()->camera);
+	//Mesh1P->bCastDynamicShadow = false;
+	//Mesh1P->CastShadow = false;
+	//Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
+	//Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
 
 	//Set up the physics handel for pickup and inspect
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
@@ -53,6 +59,8 @@ AFP_Character::AFP_Character()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+
 }
 
 // Called when the game starts or when spawned
@@ -79,18 +87,14 @@ void AFP_Character::OnFire()
 			//Check if object is interactable
 			if (Interface != nullptr)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, "reee");
 				Interface->Execute_OnInteract(HitActor, this);
 			}
 			//Check if object is pickupable
 			else 
 			{
-
+				OnGrab();
 			}
-
-
 		}
-
 	}
 }
 
@@ -99,15 +103,44 @@ bool AFP_Character::LineTrace()
 	GetController()->GetPlayerViewPoint(Loc, Rot);
 	Start = Loc;
 	End = Start + (Rot.Vector() * TraceDistance);
-	return GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, TraceParams);;
+	return GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, TraceParams);
 }
 
 void AFP_Character::OnGrab()
 {
-
+	UStaticMeshComponent* MovedComponent = Cast<UStaticMeshComponent>(Hit.GetComponent());
+	AActor* HitActor = Hit.GetActor();
+	if (HitActor->FindComponentByClass<UPhysicsConstraintComponent>() && MovedComponent->IsSimulatingPhysics())
+	{
+		IsConstrained = true;
+		PhysicsHandle->GrabComponent(MovedComponent, NAME_None, Hit.ImpactPoint, false);
+		MovedComponent->SetAngularDamping(1000.0f);
+	}
+	else if (MovedComponent->IsSimulatingPhysics())
+	{
+		//MovedComponent->SetSimulatePhysics(true);
+		PhysicsHandle->GrabComponent(MovedComponent, NAME_None, Hit.ImpactPoint, false);
+		MovedComponent->SetAngularDamping(1000.0f);
+	}
 }
 
+void AFP_Character::OnGrabRelease()
+{
+	UStaticMeshComponent* MovedComponent = Cast<UStaticMeshComponent>(Hit.GetComponent());
+	if (MovedComponent != nullptr)
+	{
+		MovedComponent->SetAngularDamping(0.0f);
+		PhysicsHandle->ReleaseComponent();
+		IsConstrained = false;
+	}
+}
+              
 void AFP_Character::OnRotate()
+{                                                                                                                
+	         
+}
+
+void AFP_Character::ToggleFlashlight()
 {
 
 }
@@ -137,14 +170,36 @@ void AFP_Character::MoveRight(float Val)
 
 void AFP_Character::TurnAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	//// calculate delta for this frame from the rate information
+	//AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	//FVector CameraVec;
+	//if (IsConstrained)
+	//{
+	//	CameraVec = FirstPersonCameraComponent->GetForwardVector() * 150;
+	//}
+	//else
+	//{
+	//	CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	//}
+	//FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
+	//PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
 }
 
 void AFP_Character::LookUpAtRate(float Rate)
 {
-	// calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	//// calculate delta for this frame from the rate information
+	//AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	//FVector CameraVec;
+	//if (IsConstrained)
+	//{
+	//	CameraVec = FirstPersonCameraComponent->GetForwardVector() * 150;
+	//}
+	//else
+	//{
+	//	CameraVec = FirstPersonCameraComponent->GetForwardVector() * 300;
+	//}
+	//FVector CameraLoc = FirstPersonCameraComponent->GetComponentLocation();
+	//PhysicsHandle->SetTargetLocation(CameraLoc + CameraVec);
 }
 
 void AFP_Character::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
@@ -221,9 +276,10 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_Character::OnFire);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFP_Character::OnGrab);
-	PlayerInputComponent->BindAction("Inspect", IE_Pressed, this, &AFP_Character::OnRotate);
+	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_Character::OnFire);
+	//PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFP_Character::OnGrabRelease);
+	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFP_Character::OnGrab); //might use
+
 
 	// Enable touchscreen input
 	//EnableTouchscreenMovement(PlayerInputComponent);
@@ -237,10 +293,10 @@ void AFP_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("TurnRate", this, &AFP_Character::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &AFP_Character::LookUpAtRate);
+	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	//PlayerInputComponent->BindAxis("TurnRate", this, &AFP_Character::TurnAtRate);
+	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	//PlayerInputComponent->BindAxis("LookUpRate", this, &AFP_Character::LookUpAtRate);
 }
 
 bool AFP_Character::EnableTouchscreenMovement(UInputComponent* PlayerInputComponent)

@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "InteractableInterface.h"
+#include "GameFramework/Actor.h"
 #include "InteractableBase.generated.h"
 
 UCLASS()
@@ -26,5 +27,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Interaction")
 	void OnInteract(AActor* Caller);
+	UFUNCTION(BlueprintCallable, Category = "Interaction")
 	virtual void OnInteract_Implementation(AActor* Caller);
 };

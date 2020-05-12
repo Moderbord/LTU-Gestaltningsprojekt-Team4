@@ -28,6 +28,10 @@
 			"Enabled": true
 		},
 		{
+			"Name": "MeshEditor",
+			"Enabled": true
+		},
+		{
 			"Name": "OculusVR",
 			"Enabled": false,
 			"SupportedTargetPlatforms": [
