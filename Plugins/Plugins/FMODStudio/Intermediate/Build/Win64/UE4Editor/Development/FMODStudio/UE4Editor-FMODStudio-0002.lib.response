@@ -1,0 +1,14 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-FMODStudio-0002.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\AGL Campus\Documents\LTU-Gestaltningsprojekt-Team4\Plugins\FMODStudio\Intermediate\Build\Win64\UE4Editor\Development\FMODStudio\PCH.FMODStudio.h.obj"
+"C:\Users\AGL Campus\Documents\LTU-Gestaltningsprojekt-Team4\Plugins\FMODStudio\Intermediate\Build\Win64\UE4Editor\Development\FMODStudio\Module.FMODStudio.cpp.obj"
+"C:\Users\AGL Campus\Documents\LTU-Gestaltningsprojekt-Team4\Plugins\FMODStudio\Intermediate\Build\Win64\UE4Editor\Development\FMODStudio\Module.FMODStudio.gen.cpp.obj"
+"C:\Users\AGL Campus\Documents\LTU-Gestaltningsprojekt-Team4\Plugins\FMODStudio\Intermediate\Build\Win64\UE4Editor\Development\FMODStudio\Default.rc2.res"
+/OUT:"C:\Users\AGL Campus\Documents\LTU-Gestaltningsprojekt-Team4\Plugins\FMODStudio\Intermediate\Build\Win64\UE4Editor\Development\FMODStudio\UE4Editor-FMODStudio-0002.lib"
+/INCLUDE:IMPLEMENT_MODULE_FMODStudio

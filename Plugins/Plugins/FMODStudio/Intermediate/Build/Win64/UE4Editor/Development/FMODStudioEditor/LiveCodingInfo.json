@@ -1,0 +1,25 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.FMODStudioEditor.cpp.obj": [
+			"AssetTypeActions_FMODEvent.cpp.obj",
+			"FMODAmbientSoundActorFactory.cpp.obj",
+			"FMODAudioComponentDetails.cpp.obj",
+			"FMODAudioComponentVisualizer.cpp.obj",
+			"FMODEventEditor.cpp.obj",
+			"FMODSettingsCustomization.cpp.obj",
+			"FMODStudioEditorModule.cpp.obj",
+			"FMODStudioStyle.cpp.obj",
+			"FMODChannelEditors.cpp.obj",
+			"FMODEventControlTrackEditor.cpp.obj",
+			"FMODEventParameterTrackEditor.cpp.obj",
+			"FMODParameterSection.cpp.obj",
+			"SFMODEventEditorPanel.cpp.obj"
+		],
+		"Module.FMODStudioEditor.gen.cpp.obj": [
+			"FMODAmbientSoundActorFactory.gen.cpp.obj",
+			"FMODChannelEditors.gen.cpp.obj",
+			"FMODStudioEditor.init.gen.cpp.obj"
+		]
+	}
+}
