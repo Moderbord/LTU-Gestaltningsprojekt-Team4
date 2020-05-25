@@ -49,6 +49,10 @@
 				"Linux",
 				"Mac"
 			]
+		},
+		{
+			"Name": "FMODStudio",
+			"Enabled": true
 		}
 	]
 }
